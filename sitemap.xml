@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://siddharthshah.me/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/upwardvx</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/about</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/resume</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Case Studies -->
+  <url>
+    <loc>https://siddharthshah.me/case-studies/kiip-acquisition-integration-ninthdecimal-1</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/case-studies/strategic-acquisition-integration-inmarket-x-ninthdecimal-1</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/case-studies/augmented-reality-credit-card-campaign-bank-of-america-1</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/case-studies/js-tag-integration-for-sdk-averse-developers-1</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/case-studies/fire-tv-native-ad-pilot-1</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/case-studies/moments-marketplace-rubicon-x-kiip-integration-1</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/case-studies/sdk-documentation-redesign-inmarket-1</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://siddharthshah.me/case-studies/ftc-consent-order-response-inmarket</loc>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
