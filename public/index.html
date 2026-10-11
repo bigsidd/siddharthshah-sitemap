@@ -84,14 +84,14 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",Georgia,serif;font-weight:8
 </div>
 </main>
 <script>
-(()=>{const l=document.querySelector('.label');const b=document.createElement('button');b.type='button';b.className='postmark';b.setAttribute('aria-pressed','false');b.title='Show your local time';l.textContent='';const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;l.append(b,night);
+(()=>{try{const l=document.querySelector('.label');const b=document.createElement('button');b.type='button';b.className='postmark';b.setAttribute('aria-pressed','false');b.title='Show your local time';const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;
 const la=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',weekday:'short',hour:'numeric',minute:'2-digit'});
 const hr=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',hourCycle:'h23'});
 const me=new Intl.DateTimeFormat('en-US',{weekday:'short',hour:'numeric',minute:'2-digit'});
 const draw=()=>{const now=new Date();if(b.getAttribute('aria-pressed')==='true'){b.textContent='Your time · '+me.format(now).replace(',','');night.hidden=true;return}
 const h=+hr.format(now);b.textContent='Los Angeles · '+la.format(now).replace(',','');night.hidden=!(h>=22||h<7)};
 b.addEventListener('click',()=>{b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');b.title=b.getAttribute('aria-pressed')==='true'?'Show Los Angeles time':'Show your local time';draw()});
-draw();setInterval(draw,30000);})();
+draw();l.textContent='';l.append(b,night);setInterval(draw,30000);}catch(e){}})();
 </script>
 </body>
 </html>
