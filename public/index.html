@@ -59,6 +59,7 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-w
 .label{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
 .postmark{font:inherit;font-size:13px;letter-spacing:inherit;text-transform:inherit;white-space:nowrap;color:var(--ink);background:transparent;border:3px double var(--ink);border-radius:999px;padding:0 14px;min-height:44px;transform:rotate(-2.5deg);cursor:pointer}
 .label .night{font-size:13px;color:var(--accent)}
+.label .wx{font-size:13px;color:var(--muted)}
 .postmark:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 @media (prefers-reduced-motion:no-preference){
   .links a{transition:background-size .25s ease-out}.links a span{transition:transform .2s ease-out}.uvx .uv{transition:width .2s ease-out,margin .2s ease-out}
@@ -91,20 +92,30 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-w
 <li><a href="https://linkedin.com/in/siddharthshah">LinkedIn <span aria-hidden="true">↗</span></a></li>
 <li><a href="https://github.com/bigsidd">GitHub <span aria-hidden="true">↗</span></a></li>
 <li><a href="https://x.com/bigsidd">X <span aria-hidden="true">↗</span></a></li>
+<li><a href="/siddharth-shah.vcf" download>Save contact <span aria-hidden="true">↓</span></a></li>
 </ul>
 </div>
 </div>
 </main>
 <script>
-(()=>{try{const l=document.querySelector('.label');const b=document.createElement('button');b.type='button';b.className='postmark';b.title='Show your local time';const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;let mine=false;
-const la=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',weekday:'short',hour:'numeric',minute:'2-digit'});
-const hr=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',hourCycle:'h23'});
+(()=>{try{const l=document.querySelector('.label');const b=document.createElement('button');b.type='button';b.className='postmark';b.title='Show your local time';
+const wx=document.createElement('span');wx.className='wx';wx.title='Long Beach, in Los Angeles County';wx.hidden=true;
+const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;let mine=false,w=null;
+const LA='America/Los_Angeles';
+const la=new Intl.DateTimeFormat('en-US',{timeZone:LA,weekday:'short',hour:'numeric',minute:'2-digit'});
+const hr=new Intl.DateTimeFormat('en-US',{timeZone:LA,hour:'numeric',hourCycle:'h23'});
 const me=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
 const set=(el,t)=>{if(el.textContent!==t)el.textContent=t};
-const draw=()=>{const now=new Date();if(mine){set(b,'Your time · '+me.format(now).replace(',',''));night.hidden=true;return}
-const h=+hr.format(now);set(b,'Los Angeles · '+la.format(now).replace(',',''));night.hidden=!(h>=22||h<7)};
+const off=(tz,now)=>{const p={};for(const x of new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}).formatToParts(now))p[x.type]=+x.value;return Math.round((Date.UTC(p.year,p.month-1,p.day,p.hour%24,p.minute)-now)/6e4)};
+const gap=now=>{const d=-now.getTimezoneOffset()-off(LA,now);if(!d)return'Same time as LA';const a=Math.abs(d),h=Math.floor(a/60),m=a%60;return(h?h+'h':'')+(h&&m?' ':'')+(m?m+'m':'')+(d>0?' ahead of LA':' behind LA')};
+const golden=t=>{const r=Math.PI/180,lat=33.77,lng=-118.19,jd=t/864e5+2440587.5,n0=Math.ceil(jd-2451545+.0008);for(let n=n0-1;n<=n0+1;n++){const j=n-lng/360,M=(357.5291+.98560028*j)%360,C=1.9148*Math.sin(M*r)+.02*Math.sin(2*M*r)+.0003*Math.sin(3*M*r),L=(M+C+282.9372)%360,jt=2451545+j+.0053*Math.sin(M*r)-.0069*Math.sin(2*L*r),d=Math.asin(Math.sin(L*r)*Math.sin(23.4397*r)),h=Math.acos((Math.sin(-.833*r)-Math.sin(lat*r)*Math.sin(d))/(Math.cos(lat*r)*Math.cos(d)))/r,s=(jt+h/360-2440587.5)*864e5;if(s-t>=0&&s-t<=36e5)return true}return false};
+const draw=()=>{const now=new Date();if(mine){set(b,'Your time · '+me.format(now).replace(',',''));set(wx,gap(now));wx.hidden=false;night.hidden=true;return}
+const h=+hr.format(now);set(b,'Los Angeles · '+la.format(now).replace(',',''));night.hidden=!(h>=22||h<7);
+const g=golden(+now),base=w?w.t+'°'+(w.c?' and '+w.c:'')+' in Long Beach':'';set(wx,base?base+(g?' · golden hour':''):(g?'Golden hour in Long Beach':''));wx.hidden=!wx.textContent};
 b.addEventListener('click',()=>{mine=!mine;b.title=mine?'Show Los Angeles time':'Show your local time';draw()});
-draw();l.textContent='';l.append(b,night);setTimeout(()=>{draw();setInterval(draw,60000)},60000-Date.now()%60000);}catch(e){}})();
+draw();l.textContent='';l.append(b,wx,night);setTimeout(()=>{draw();setInterval(draw,60000)},60000-Date.now()%60000);
+if(window.fetch&&window.AbortController){const c=new AbortController();setTimeout(()=>c.abort(),3000);fetch('https://card-weather.bigsidd-75f.workers.dev/now.json',{signal:c.signal}).then(r=>r.ok?r.json():{}).then(d=>{if(typeof d.t==='number'&&d.at&&Date.now()-Date.parse(d.at)<72e5){w={t:d.t,c:typeof d.c==='string'?d.c:''};draw()}}).catch(()=>{})}
+}catch(e){}})();
 </script>
 </body>
 </html>
