@@ -1,5 +1,6 @@
 // Long Beach weather for the siddharthshah.me card.
 // Deployed as the Cloudflare Worker "card-weather" (personal account).
+// Reads the last few KLGB observations and uses the newest with a temperature.
 // GET /now.json -> {"t":64,"c":"clear","at":"2026-10-11T07:53:00Z"} or {} when unknown.
 const STATION = 'KLGB'; // Long Beach Airport, NWS
 const ORIGINS = ['https://siddharthshah.me', 'https://www.siddharthshah.me', 'https://siddharthshah-me.onrender.com'];
@@ -22,22 +23,31 @@ export function summarize(obs, now = Date.now()) {
   return out;
 }
 
+// Newest observation that actually carries a temperature (special reports often leave it blank).
+export function latest(collection, now = Date.now()) {
+  for (const obs of (collection && collection.features) || []) {
+    const out = summarize(obs, now);
+    if (out.t !== undefined) return out;
+  }
+  return {};
+}
+
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
     const origin = req.headers.get('Origin');
     const cors = { 'Access-Control-Allow-Origin': ORIGINS.includes(origin) ? origin : ORIGINS[0], Vary: 'Origin' };
     if (url.pathname !== '/now.json') return new Response('Not found', { status: 404 });
-    const key = new Request('https://card-weather.internal/now.json');
+    const key = new Request('https://card-weather.internal/now-v2.json');
     const cache = caches.default;
     let res = await cache.match(key);
     if (!res) {
       let body = {}, ttl = 60;
       try {
-        const r = await fetch(`https://api.weather.gov/stations/${STATION}/observations/latest`, {
+        const r = await fetch(`https://api.weather.gov/stations/${STATION}/observations?limit=6`, {
           headers: { 'User-Agent': 'siddharthshah.me card weather (https://siddharthshah.me)', Accept: 'application/geo+json' },
         });
-        if (r.ok) { body = summarize(await r.json()); if (body.t !== undefined) ttl = 900; }
+        if (r.ok) { body = latest(await r.json()); if (body.t !== undefined) ttl = 900; }
       } catch (e) {}
       res = new Response(JSON.stringify(body), { headers: { 'Content-Type': 'application/json', 'Cache-Control': `public, max-age=${ttl}` } });
       ctx.waitUntil(cache.put(key, res.clone()));
