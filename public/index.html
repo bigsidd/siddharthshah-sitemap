@@ -10,16 +10,22 @@
 <meta property="og:description" content="Products and the partnerships that make them pay. More than a decade in digital advertising and retail media. Also runs Upward Ventures.">
 <meta property="og:type" content="profile">
 <meta property="og:url" content="https://siddharthshah.me/">
-<meta property="og:image" content="https://siddharthshah.me/brand/og.png">
+<meta property="og:image" content="https://siddharthshah.me/brand/og.png?v=2">
+<meta property="og:image:alt" content="Siddharth Shah: I build products and the partnerships that make them pay.">
+<meta property="og:site_name" content="Siddharth Shah">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@bigsidd">
+<meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F3EEE4">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/brand/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/brand/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=IBM+Plex+Sans:wght@400;600&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=IBM+Plex+Sans:wght@400;600&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
 <style>
 :root{--paper:#F3EEE4;--ink:#1E3A2F;--muted:#4A4636;--rule:#1E3A2F;--accent:#A8431F}
 *{box-sizing:border-box}
@@ -32,20 +38,20 @@ a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 .card{width:100%;max-width:880px;border-top:3px double var(--rule);border-bottom:3px double var(--rule);display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:center;padding:40px 0}
 .photo{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border:1px solid var(--rule);outline:1px solid var(--rule);outline-offset:4px}
 .label{margin:0 0 14px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:14px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-h1{margin:0 0 18px;font-family:"Bricolage Grotesque",Georgia,serif;font-weight:800;font-size:clamp(40px,6vw,64px);line-height:1;letter-spacing:-0.03em}
+h1{margin:0 0 18px;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(40px,6vw,64px);line-height:1;letter-spacing:-0.03em}
 .copy p{margin:0 0 12px;font-size:19px;line-height:1.6;max-width:52ch}
 .copy .lede{font-size:22px;line-height:1.4;font-weight:600}
 .copy p a{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
 .links{list-style:none;margin:22px 0 0;padding:16px 0 0;border-top:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:4px 28px;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:16px;font-weight:500}
-.links a{display:inline-block;padding:12px 0;text-decoration:none;background:linear-gradient(var(--accent),var(--accent)) no-repeat 0 calc(100% - 8px)/0% 2px;transition:background-size .25s ease-out}
-.links a span{display:inline-block;transition:transform .2s ease-out}
+.links a{display:inline-block;padding:12px 0;text-decoration:none;background:linear-gradient(var(--accent),var(--accent)) no-repeat 0 calc(100% - 8px)/0% 2px}
+.links a span{display:inline-block}
 @media (hover:hover){.links a:hover{background-size:100% 2px}.links a:hover span{transform:translate(2px,-2px)}}
 .links a:focus-visible{background-size:100% 2px}
 .links span{color:var(--accent)}
 @media (max-width:700px){.card{grid-template-columns:1fr;gap:28px;padding:32px 0}.photo{max-width:160px}}
 
 /* Upward Ventures: the one UVX glyph, shown on hover */
-.uvx .uv{display:inline-block;width:0;overflow:hidden;vertical-align:-2px;color:var(--ink);transition:width .2s ease-out,margin .2s ease-out}
+.uvx .uv{display:inline-block;width:0;overflow:hidden;vertical-align:-2px;color:var(--ink)}
 .uvx .uv svg{width:16px;height:16px;display:block}
 @media (hover:hover){.uvx:hover .uv{width:16px;margin-left:5px}}
 .uvx:focus-visible .uv{width:16px;margin-left:5px}
@@ -55,25 +61,26 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",Georgia,serif;font-weight:8
 .label .night{font-size:13px;color:var(--accent)}
 .postmark:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 @media (prefers-reduced-motion:no-preference){
-  .card{animation:open .7s cubic-bezier(.6,0,.2,1) backwards}
+  .links a{transition:background-size .25s ease-out}.links a span{transition:transform .2s ease-out}.uvx .uv{transition:width .2s ease-out,margin .2s ease-out}
+  .card{animation:open .5s cubic-bezier(.6,0,.2,1) backwards}
   @keyframes open{from{clip-path:inset(-12px 50% -12px 50%)}to{clip-path:inset(-12px 0 -12px 0)}}
-  .photo{animation:frame .6s .55s ease-out backwards}
+  .photo{animation:frame .45s .2s ease-out backwards}
   @keyframes frame{from{outline-offset:14px;outline-color:transparent;opacity:0}to{outline-offset:4px;opacity:1}}
-  .copy>*{animation:settle .5s ease-out backwards}
-  .copy>:nth-child(2){animation-delay:.65s}.copy>:nth-child(3){animation-delay:.75s}.copy>:nth-child(4){animation-delay:.85s}.copy>:nth-child(5){animation-delay:.95s}.copy>:nth-child(6){animation-delay:1.05s}
+  .copy>*{animation:settle .4s ease-out backwards}
+  .copy>:nth-child(2){animation-delay:.25s}.copy>:nth-child(3){animation-delay:.3s}.copy>:nth-child(4){animation-delay:.35s}.copy>:nth-child(5){animation-delay:.4s}.copy>:nth-child(6){animation-delay:.45s}
   @keyframes settle{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  .copy>.label{animation:press .2s 1.2s cubic-bezier(.2,.9,.2,1) backwards}
+  .copy>.label{animation:press .2s .55s cubic-bezier(.2,.9,.2,1) backwards}
   @keyframes press{from{opacity:0;transform:scale(1.35)}to{opacity:1;transform:scale(1)}}
 }
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Siddharth Shah","url":"https://siddharthshah.me/","image":"https://siddharthshah.me/brand/siddharth.jpg","description":"Builds products and the partnerships that make them pay. More than a decade in digital advertising and retail media.","address":{"@type":"PostalAddress","addressLocality":"Los Angeles","addressRegion":"CA","addressCountry":"US"},"sameAs":["https://linkedin.com/in/siddharthshah","https://github.com/bigsidd","https://x.com/bigsidd","https://upwardvx.com/"]}
+{"@context":"https://schema.org","@type":"Person","name":"Siddharth Shah","url":"https://siddharthshah.me/","image":"https://siddharthshah.me/brand/siddharth.jpg","description":"Builds products and the partnerships that make them pay. More than a decade in digital advertising and retail media.","address":{"@type":"PostalAddress","addressLocality":"Los Angeles","addressRegion":"CA","addressCountry":"US"},"sameAs":["https://linkedin.com/in/siddharthshah","https://github.com/bigsidd","https://x.com/bigsidd"]}
 </script>
 </head>
 <body>
 <main class="page">
 <div class="card">
-<picture><source srcset="/brand/siddharth.webp" type="image/webp"><img class="photo" src="/brand/siddharth.jpg" width="512" height="512" alt="Siddharth Shah"></picture>
+<picture><source srcset="/brand/siddharth.webp" type="image/webp"><img class="photo" src="/brand/siddharth.jpg" width="512" height="512" alt="Siddharth Shah" fetchpriority="high" decoding="async"></picture>
 <div class="copy">
 <p class="label">Los Angeles</p>
 <h1>Siddharth&nbsp;Shah</h1>
@@ -89,14 +96,15 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",Georgia,serif;font-weight:8
 </div>
 </main>
 <script>
-(()=>{try{const l=document.querySelector('.label');const b=document.createElement('button');b.type='button';b.className='postmark';b.setAttribute('aria-pressed','false');b.title='Show your local time';const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;
+(()=>{try{const l=document.querySelector('.label');const b=document.createElement('button');b.type='button';b.className='postmark';b.title='Show your local time';const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;let mine=false;
 const la=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',weekday:'short',hour:'numeric',minute:'2-digit'});
 const hr=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',hourCycle:'h23'});
-const me=new Intl.DateTimeFormat('en-US',{weekday:'short',hour:'numeric',minute:'2-digit'});
-const draw=()=>{const now=new Date();if(b.getAttribute('aria-pressed')==='true'){b.textContent='Your time · '+me.format(now).replace(',','');night.hidden=true;return}
-const h=+hr.format(now);b.textContent='Los Angeles · '+la.format(now).replace(',','');night.hidden=!(h>=22||h<7)};
-b.addEventListener('click',()=>{b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');b.title=b.getAttribute('aria-pressed')==='true'?'Show Los Angeles time':'Show your local time';draw()});
-draw();l.textContent='';l.append(b,night);setInterval(draw,30000);}catch(e){}})();
+const me=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+const set=(el,t)=>{if(el.textContent!==t)el.textContent=t};
+const draw=()=>{const now=new Date();if(mine){set(b,'Your time · '+me.format(now).replace(',',''));night.hidden=true;return}
+const h=+hr.format(now);set(b,'Los Angeles · '+la.format(now).replace(',',''));night.hidden=!(h>=22||h<7)};
+b.addEventListener('click',()=>{mine=!mine;b.title=mine?'Show Los Angeles time':'Show your local time';draw()});
+draw();l.textContent='';l.append(b,night);setTimeout(()=>{draw();setInterval(draw,60000)},60000-Date.now()%60000);}catch(e){}})();
 </script>
 </body>
 </html>
