@@ -2,6 +2,7 @@ BEGIN:VCARD
 VERSION:3.0
 N:Shah;Siddharth;;;
 FN:Siddharth Shah
+EMAIL;TYPE=INTERNET:hello@siddharthshah.me
 URL:https://siddharthshah.me
 X-SOCIALPROFILE;TYPE=linkedin:https://linkedin.com/in/siddharthshah
 X-SOCIALPROFILE;TYPE=github:https://github.com/bigsidd
