@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=IBM+Plex+Sans:wght@400;600&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap">
 <style>
-:root{--paper:#F3EEE4;--ink:#1E3A2F;--muted:#4A4636;--rule:#1E3A2F;--accent:#A8431F}
+:root{--paper:#F3EEE4;--ink:#1E3A2F;--muted:#4A4636;--rule:#1E3A2F;--accent:#A8431F;--strike:cubic-bezier(.7,0,.9,.5);--settle:cubic-bezier(.2,.9,.2,1);--feed:cubic-bezier(.6,0,.2,1)}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--paper)}
 body{font-family:"IBM Plex Sans","Segoe UI",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
@@ -63,6 +63,16 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-w
 .label .night{font-size:13px;color:var(--accent)}
 .label .wx{font-size:13px;color:var(--muted)}
 .postmark:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+/* living marks: cancellation waves beside the postmark, the weather chip, the sun in the ring */
+.pmw{position:relative;display:inline-flex;align-items:center}
+.cancel{position:absolute;left:calc(100% - 20px);top:50%;width:34px;height:22px;margin-top:-12px;color:var(--ink);opacity:0;pointer-events:none;transform:rotate(-2.5deg)}
+.wxchip{display:inline-flex;align-items:center;justify-content:center;gap:5px;height:26px;width:46px;border:3px double var(--ink);border-radius:999px;transform:rotate(-2.5deg);overflow:hidden}
+.wxchip i{width:4px;height:4px;border-radius:50%;background:var(--ink);opacity:.2}
+.wxchip[hidden],.gh[hidden]{display:none}
+.gh{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;vertical-align:top}
+.sun{display:block;width:18px;height:18px;flex:none;overflow:visible}
+.sun .ring{fill:none;stroke:var(--ink);stroke-width:1.2;vector-effect:non-scaling-stroke}
+@media (prefers-reduced-motion:reduce){.wxchip i{opacity:1}}
 @media (prefers-reduced-motion:no-preference){
   .links a{transition:background-size .25s ease-out}.links a span{transition:transform .2s ease-out}.uvx .uv{transition:width .2s ease-out,margin .2s ease-out}
   .card{animation:open .5s cubic-bezier(.6,0,.2,1) backwards}
@@ -74,6 +84,20 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-w
   @keyframes settle{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   .copy>.label{animation:press .2s .55s cubic-bezier(.2,.9,.2,1) backwards}
   @keyframes press{from{opacity:0;transform:scale(1.35)}to{opacity:1;transform:scale(1)}}
+  .postmark.go{animation:pmpress .3s both}
+  @keyframes pmpress{0%{transform:rotate(-2.5deg) scale(1.035);opacity:.55;animation-timing-function:var(--strike)}30%{transform:rotate(-2.5deg) scale(.988);opacity:1;animation-timing-function:var(--settle)}100%{transform:rotate(-2.5deg) scale(1);opacity:1}}
+  .cancel.go{animation:wave 2.4s 90ms both}
+  @keyframes wave{0%{opacity:0}3%{opacity:.7}25%{opacity:.7;animation-timing-function:cubic-bezier(.4,0,.8,.6)}100%{opacity:0}}
+  .wxchip.on{animation:chipin .2s var(--settle) both}
+  @keyframes chipin{from{opacity:0;transform:rotate(-2.5deg) scale(1.25)}to{opacity:1;transform:rotate(-2.5deg) scale(1)}}
+  .wxchip.on i{animation:wdot 1.2s infinite}.wxchip.on i:nth-child(2){animation-delay:.24s}.wxchip.on i:nth-child(3){animation-delay:.48s}
+  @keyframes wdot{0%{opacity:.2;transform:none}1%{opacity:.5;transform:scale(1.7);animation-timing-function:var(--settle)}14%,58%{opacity:1;transform:none}78%,100%{opacity:.2;transform:none}}
+  .wxchip.out{animation:chipout .16s var(--strike) both}
+  @keyframes chipout{to{opacity:0;transform:rotate(-2.5deg) scale(.86)}}
+  .wxchip.gone{animation:chipgone .22s var(--feed) both}
+  @keyframes chipgone{to{opacity:0;width:0;border-width:0;margin:0}}
+  .wx.in{animation:wxin .26s var(--settle) both}
+  @keyframes wxin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 }
 </style>
 <script type="application/ld+json">
@@ -102,8 +126,13 @@ h1{margin:0 0 18px;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-w
 </main>
 <script>
 (()=>{try{const l=document.querySelector('.label');const b=document.createElement('button');b.type='button';b.className='postmark';b.title='Show your local time';
+const RM=matchMedia('(prefers-reduced-motion: reduce)'),t0=Date.now(),go=(e,c='go')=>{e.classList.remove(c);void e.offsetWidth;e.classList.add(c)};
+const pw=document.createElement('span');pw.className='pmw';pw.innerHTML='<svg class="cancel" viewBox="0 0 34 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 4c3.5-2.6 6 2.6 9.5 0s6 2.6 9.5 0 6 2.6 9.5 0"/><path d="M1 11c3.5-2.6 6 2.6 9.5 0s6 2.6 9.5 0 6 2.6 9.5 0"/><path d="M1 18c3.5-2.6 6 2.6 9.5 0s6 2.6 9.5 0 6 2.6 9.5 0"/></g></svg>';const cx=pw.firstChild;pw.prepend(b);
+const chip=document.createElement('span');chip.className='wxchip';chip.setAttribute('aria-hidden','true');chip.hidden=true;chip.innerHTML='<i></i><i></i><i></i>';
 const wx=document.createElement('span');wx.className='wx';wx.title='Long Beach, in Los Angeles County';wx.hidden=true;
-const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;let mine=false,w=null;
+const pa=document.createTextNode(''),pb=document.createTextNode(''),gh=document.createElement('span');gh.className='gh';gh.innerHTML='<svg class="sun" viewBox="0 0 96 96" aria-hidden="true"><defs><clipPath id="sky"><circle cx="48" cy="48" r="38"/></clipPath><clipPath id="above"><rect width="96" height="60"/></clipPath></defs><circle class="ring" cx="48" cy="48" r="44"/><g clip-path="url(#sky)"><g clip-path="url(#above)"><ellipse cx="46" cy="30" rx="15" ry="15" fill="#A8431F"/></g></g><line class="ring" x1="8" y1="60" x2="88" y2="60"/></svg><span></span>';
+const se=gh.querySelector('ellipse'),gt=gh.lastChild;wx.append(pa,gh,pb);wx.addEventListener('animationend',()=>wx.classList.remove('in'));
+const night=document.createElement('span');night.className='night';night.textContent='Replies in the morning';night.hidden=true;let mine=false,w=null,pend=!!(window.fetch&&window.AbortController),chipOn=false;
 const LA='America/Los_Angeles';
 const la=new Intl.DateTimeFormat('en-US',{timeZone:LA,weekday:'short',hour:'numeric',minute:'2-digit'});
 const hr=new Intl.DateTimeFormat('en-US',{timeZone:LA,hour:'numeric',hourCycle:'h23'});
@@ -111,13 +140,21 @@ const me=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZo
 const set=(el,t)=>{if(el.textContent!==t)el.textContent=t};
 const off=(tz,now)=>{const p={};for(const x of new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}).formatToParts(now))p[x.type]=+x.value;return Math.round((Date.UTC(p.year,p.month-1,p.day,p.hour%24,p.minute)-now)/6e4)};
 const gap=now=>{const d=-now.getTimezoneOffset()-off(LA,now);if(!d)return'Same time as LA';const a=Math.abs(d),h=Math.floor(a/60),m=a%60;return(h?h+'h':'')+(h&&m?' ':'')+(m?m+'m':'')+(d>0?' ahead of LA':' behind LA')};
-const golden=t=>{const r=Math.PI/180,lat=33.77,lng=-118.19,jd=t/864e5+2440587.5,n0=Math.ceil(jd-2451545+.0008);for(let n=n0-1;n<=n0+1;n++){const j=n-lng/360,M=(357.5291+.98560028*j)%360,C=1.9148*Math.sin(M*r)+.02*Math.sin(2*M*r)+.0003*Math.sin(3*M*r),L=(M+C+282.9372)%360,jt=2451545+j+.0053*Math.sin(M*r)-.0069*Math.sin(2*L*r),d=Math.asin(Math.sin(L*r)*Math.sin(23.4397*r)),h=Math.acos((Math.sin(-.833*r)-Math.sin(lat*r)*Math.sin(d))/(Math.cos(lat*r)*Math.cos(d)))/r,s=(jt+h/360-2440587.5)*864e5;if(s-t>=0&&s-t<=36e5)return true}return false};
-const draw=()=>{const now=new Date();if(mine){set(b,'Your time · '+me.format(now).replace(',',''));set(wx,gap(now));wx.hidden=false;night.hidden=true;return}
-const h=+hr.format(now);set(b,'Los Angeles · '+la.format(now).replace(',',''));night.hidden=!(h>=22||h<7);
-const g=golden(+now),base=w?w.t+'°'+(w.c?' and '+w.c:'')+' in Long Beach':'';set(wx,base?base+(g?' · golden hour':''):(g?'Golden hour in Long Beach':''));wx.hidden=!wx.textContent};
+const sun=t=>{const r=Math.PI/180,lat=33.77,lng=-118.19,jd=t/864e5+2440587.5,n0=Math.ceil(jd-2451545+.0008);for(let n=n0-1;n<=n0+1;n++){const j=n-lng/360,M=(357.5291+.98560028*j)%360,C=1.9148*Math.sin(M*r)+.02*Math.sin(2*M*r)+.0003*Math.sin(3*M*r),L=(M+C+282.9372)%360,jt=2451545+j+.0053*Math.sin(M*r)-.0069*Math.sin(2*L*r),d=Math.asin(Math.sin(L*r)*Math.sin(23.4397*r)),h=Math.acos((Math.sin(-.833*r)-Math.sin(lat*r)*Math.sin(d))/(Math.cos(lat*r)*Math.cos(d)))/r,s=(jt+h/360-2440587.5)*864e5;if(s-t>=0&&s-t<=36e5)return(s-t)/6e4}return -1};
+const sunAt=m=>{const f=Math.min(1,Math.max(0,1-Math.ceil(m)/60)),cy=30+f*45,k=Math.min(1,Math.max(0,(cy-45)/15));se.setAttribute('cx',(44+f*6).toFixed(2));se.setAttribute('cy',cy.toFixed(2));se.setAttribute('ry',(15*(1-.16*k)).toFixed(2))};
+const fc=document.createElement('canvas');fc.width=fc.height=32;const fx=fc.getContext&&fc.getContext('2d');let sig='',icon=null;
+const fav=(h,st)=>{const s=st+Math.round(h*12);if(!fx||s===sig)return;sig=s;const c=fx,ink='#1E3A2F',paper='#F3EEE4',n=st==='night',fg=st==='gold'?'#A8431F':n?paper:ink,a=h%12/6*Math.PI-Math.PI/2;
+c.clearRect(0,0,32,32);c.beginPath();c.arc(16,16,15.5,0,7);c.fillStyle=n?ink:paper;c.fill();c.strokeStyle=fg;c.globalAlpha=n?.6:1;c.lineWidth=n?1.4:2.4;c.beginPath();c.arc(16,16,14,0,7);c.stroke();c.globalAlpha=1;
+c.lineCap='butt';c.lineWidth=2;c.beginPath();c.moveTo(16,3.4);c.lineTo(16,6);c.stroke();c.lineCap='square';c.lineWidth=3;c.beginPath();c.moveTo(16,16);c.lineTo(16+Math.cos(a)*8.2,16+Math.sin(a)*8.2);c.stroke();c.beginPath();c.arc(16,16,2.1,0,7);c.fillStyle=fg;c.fill();
+if(!icon){document.querySelectorAll('link[rel="icon"]').forEach(x=>x.remove());icon=document.createElement('link');icon.rel='icon';icon.type='image/png';icon.setAttribute('sizes','32x32');document.head.append(icon)}icon.href=fc.toDataURL('image/png')};
+const draw=re=>{const now=new Date(),h=+hr.format(now),m=sun(+now),g=m>=0;fav((((Math.floor(now/6e4)+off(LA,now))%1440+1440)%1440)/60,g?'gold':h>=22||h<7?'night':'day');chip.hidden=!chipOn||mine;
+if(mine){set(b,'Your time · '+me.format(now).replace(',',''));set(pa,gap(now));set(pb,'');gh.hidden=true;wx.hidden=false;night.hidden=true;return}
+const t='Los Angeles · '+la.format(now).replace(',','');if(re&&!RM.matches&&!document.hidden&&b.textContent!==t&&Date.now()-t0>6e4){go(b);go(cx);setTimeout(()=>{if(!mine)set(b,t)},90)}else set(b,t);night.hidden=!(h>=22||h<7);
+const base=w?w.t+'°'+(w.c?' and '+w.c:'')+' in Long Beach':'';set(pa,base+(base&&g?' · ':''));set(gt,base?'golden hour':'Golden hour');set(pb,g&&!base?' in Long Beach':'');gh.hidden=!g;if(g)sunAt(m);wx.hidden=pend||!(base||g)};
 b.addEventListener('click',()=>{mine=!mine;b.title=mine?'Show Los Angeles time':'Show your local time';draw()});
-draw();l.textContent='';l.append(b,wx,night);setTimeout(()=>{draw();setInterval(draw,60000)},60000-Date.now()%60000);
-if(window.fetch&&window.AbortController){const c=new AbortController();setTimeout(()=>c.abort(),3000);fetch('https://card-weather.bigsidd-75f.workers.dev/now.json',{signal:c.signal}).then(r=>r.ok?r.json():{}).then(d=>{if(typeof d.t==='number'&&d.at&&Date.now()-Date.parse(d.at)<72e5){w={t:d.t,c:typeof d.c==='string'?d.c:''};draw()}}).catch(()=>{})}
+draw();l.textContent='';l.append(pw,chip,wx,night);setTimeout(()=>{draw(1);setInterval(()=>draw(1),60000)},60000-Date.now()%60000);
+const end=v=>{if(!pend)return;pend=false;const shown=chipOn,fin=()=>{chipOn=false;chip.className='wxchip';w=v;draw();if(shown&&!wx.hidden&&!RM.matches)go(wx,'in')};if(!shown||RM.matches)return fin();chip.classList.remove('on');chip.classList.add(v?'out':'gone');setTimeout(fin,v?160:220)};
+if(pend){setTimeout(()=>{if(pend){chipOn=true;draw();if(!RM.matches)go(chip,'on')}},RM.matches?250:1000);const c=new AbortController();setTimeout(()=>c.abort(),3000);fetch('https://card-weather.bigsidd-75f.workers.dev/now.json',{signal:c.signal}).then(r=>r.ok?r.json():{}).then(d=>end(typeof d.t==='number'&&d.at&&Date.now()-Date.parse(d.at)<72e5?{t:d.t,c:typeof d.c==='string'?d.c:''}:null)).catch(()=>end(null))}
 }catch(e){}})();
 </script>
 </body>
