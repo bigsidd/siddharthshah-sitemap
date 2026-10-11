@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: siddharthshah-me
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: ./public
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /brand/*
+        name: Cache-Control
+        value: public, max-age=604800
